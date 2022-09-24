@@ -13,6 +13,9 @@
 	var/frequency = FREQ_COMM_DISH
 	var/list/cargo_logs = list()
 
+	// Bandpass filter for remote signals
+	var/band_filter = R_FREQ_INTERCOM_BRIDGE
+
 	mats = 25
 	deconstruct_flags = DECON_NONE
 
@@ -160,6 +163,28 @@
 			return
 
 		switch(sigcommand)
+			if("config", "configure") // We must be adjusting some settings here!
+				var/new_band = R_FREQ_INTERCOM_BRIDGE
+				if(signal.data["band"])
+					new_band = text2num(signal.data["band"])
+
+				if(new_band == null)
+					new_band = R_FREQ_INTERCOM_BRIDGE
+
+				if(new_band == band_filter)
+					src.post_reply("COM_FREQ_ERR", target)
+					return
+
+				band_filter = new_band
+				if(rand(0, 1000) < 8 || 1)	// Temporary woo
+					LAGCHECK(LAG_LOW)	// I don't want to kill everyone over adventure shit
+					for (var/client/C in clients)
+						C.play_music_radio("feedback")
+					// Send a PDA message
+					var/datum/signal/pdaSignal = get_free_signal()
+					pdaSignal.data = list("command"="text_message", "sender_name"="COMMS-DISH", "sender"="00000000", "message"="Signal received on frequency [band_filter]. Now playing data.", "group" = MGA_RADIO)
+					SEND_SIGNAL(src, COMSIG_MOVABLE_POST_RADIO_PACKET, pdaSignal, null, "pda")
+
 			if("call", "recall") //Time to call/cancel a shuttle!
 				switch(signal.data["shuttle_id"])
 					if("emergency")

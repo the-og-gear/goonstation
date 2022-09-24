@@ -59,6 +59,7 @@
 #define R_FREQ_INTERCOM_SYNDCOMMAND 6174 // kaprekar's constant, a unique and weird number
 #define R_FREQ_INTERCOM_TERRA8 1156 // 34 squared, octahedral number, centered pentagonal number, centered hendecagonal number
 #define R_FREQ_INTERCOM_HEMERA 777 // heh
+#define R_FREQ_INTERCOM_VALIANT 1337 // technologically advanced!
 
 // These are for the Syndicate headset randomizer proc.
 #define R_FREQ_BLACKLIST list(R_FREQ_DEFAULT, R_FREQ_COMMAND, R_FREQ_SECURITY, R_FREQ_DETECTIVE, R_FREQ_ENGINEERING, R_FREQ_RESEARCH, R_FREQ_MEDICAL, R_FREQ_CIVILIAN, R_FREQ_SYNDICATE, R_FREQ_GANG, R_FREQ_MULTI,\
